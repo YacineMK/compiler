@@ -1,0 +1,8 @@
+PROGRAMME Somme10
+VAR {
+    INTEGER n , i;
+}
+
+BEGIN
+    n = ((n-4)+2);
+END.
