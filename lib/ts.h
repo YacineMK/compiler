@@ -1,5 +1,4 @@
-/****************CREATION DE LA TABLE DES SYMBOLES ******************/
-/***Step 1: Definition des structures de données ***/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,7 +8,6 @@
 typedef struct element *Liste;
 typedef struct element
 {
-    // int state;
     char name[20];
     char code[20];
     char type[20];
@@ -20,15 +18,11 @@ typedef struct element
 typedef struct elt *ListeSM;
 typedef struct elt
 {
-    // int state;
     char name[20];
     char type[20];
     ListeSM svt;
 } elt;
 
-// element tab[1000];
-// elt tabs[40],tabm[40];
-// extern char sav[20];
 Liste T = NULL;
 extern Liste Pile;
 Liste P = NULL;
@@ -41,8 +35,6 @@ elt e2;
 
 int tmp = 0;
 
-/***Step 2: initialisation de l'état des cases des tables des symbloles***/
-/*0: la case est libre    1: la case est occupée*/
 
 void ajouter_tete(Liste *T, element e)
 {
@@ -114,13 +106,12 @@ void ajouter_apresSM(ListeSM *P, elt e)
     *P = nouv;
 }
 
-/***Step 3: insertion des entititées lexicales dans les tables des symboles ***/
 
 void inserer(char entite[], char code[], char type[], float val, int y)
 {
     switch (y)
     {
-    case 0: /*insertion dans la table des IDF et CONST*/
+    case 0: 
         strcpy(e1.name, entite);
         strcpy(e1.code, code);
         strcpy(e1.type, type);
@@ -134,7 +125,7 @@ void inserer(char entite[], char code[], char type[], float val, int y)
             ajouter_apres(&P, e1);
         break;
 
-    case 1: /*insertion dans la table des mots clés*/
+    case 1: 
         strcpy(e2.name, entite);
         strcpy(e2.type, code);
         if (TM == NULL)
@@ -146,7 +137,7 @@ void inserer(char entite[], char code[], char type[], float val, int y)
             ajouter_apresSM(&PM, e2);
         break;
 
-    case 2: /*insertion dans la table des séparateurs*/
+    case 2:
         strcpy(e2.name, entite);
         strcpy(e2.type, code);
         if (TS == NULL)
@@ -200,50 +191,45 @@ float get_valeur(char entite[])
     Liste Z;
     Z = get_idf(entite);
 
-    // Check if Z exists and has a value
     if (Z != NULL)
     {
         if (!isnan(Z->val))
-        {                  // isnan returns non-zero if value IS NaN
-            return Z->val; // Return value if it's not NaN
+        {                  
+            return Z->val; 
         }
     }
     return NAN; 
 }
 
-/***Step 4: La fonction Rechercher permet de verifier  si l'entité existe dèja dans la table des symboles */
 void rechercher(char entite[], char code[], char type[], float val, int y)
 {
     switch (y)
     {
     case 0:
-    { /* Verify if the identifier/constant exists in the table */
+    { 
         Liste Z = T;
         while ((Z != NULL) && (strcmp(entite, Z->name) != 0))
             Z = Z->svt;
         if (Z == NULL)
             inserer(entite, code, type, val, 0);
-        // else printf("entité existe déjà\n");
         break;
     }
     case 1:
-    { /* Verify if the keyword exists in the table */
+    { 
         ListeSM ZM = TM;
         while ((ZM != NULL) && (strcmp(entite, ZM->name) != 0))
             ZM = ZM->svt;
         if (ZM == NULL)
             inserer(entite, code, type, val, 1);
-        // else printf("entité existe déjà\n");
         break;
     }
     case 2:
-    { /* Verify if the separator exists in the table */
+    { 
         ListeSM ZS = TS;
         while ((ZS != NULL) && (strcmp(entite, ZS->name) != 0))
             ZS = ZS->svt;
         if (ZS == NULL)
             inserer(entite, code, type, val, 2);
-        // else printf("entité existe déjà\n");
         break;
     }
     }
@@ -331,7 +317,6 @@ int get_idf_type(char entite[])
     }
 }
 
-/***Step 5 L'affichage du contenue de la table des symboles ***/
 
 void afficher()
 {
@@ -357,14 +342,6 @@ void afficher()
     printf("_____________________________________\n");
     printf("\t| NomEntite |  CodeEntite | \n");
     printf("_____________________________________\n");
-
-    /*for(i=0;i<40;i++)
-        if(tabm[i].state==1)
-          {
-            printf("\t|%10s |%12s | \n",tabm[i].name, tabm[i].type);
-
-          }
-    */
 
     ListeSM ZM = TM;
     while (ZM != NULL)
@@ -466,7 +443,6 @@ char *Creer_Tmp()
     sprintf(ch, "%d", tmp);
     // printf("%s\n",ch);
     char *ch2 = strdup("Res");
-    // printf("%s\n",ch2);
     return strcat(ch2, ch);
 }
 
@@ -514,7 +490,6 @@ void ET_LOG(int Qc, int cpt, int c, char tmp[])
     case 1:
         for (int i = 1; i <= cpt; i++)
         {
-            // char *op = get_ops_comp(qc-i);
             ajour_quad(Qc - i, 1, tmp);
         }
         break;
